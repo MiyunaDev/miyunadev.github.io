@@ -1,4 +1,11 @@
-<script setup lang="ts">
+<script lang="ts" setup>
+
+
+import { ref } from "vue"
+import { FaAndroid } from "vue-icons-plus/fa"
+
+import CardApp from "./components/CardApp.vue"
+
 </script>
 
 <template>
@@ -17,19 +24,31 @@
       </div>
     </div>
 
-    <div class="bg-[#23002c]">
-      <div class="p-8">
+    <div class="bg-[#2c0026] p-4">
+      <div class="p-5">
         <div class="p-4 shadow-2xl">
           <p class="text-center font-bold text-3xl my-2">What is Miyuna?</p>
           <p class="md:text-lg p-10">We are a multiplatform Read & Watch Series/Novel/Comic app development team. You can enjoy the app for multiple platforms and variety of sweets that you can choose from</p>
           
-          <div>
+
+          <div class="bg-[#490959] p-2 rounded-2xl my-2">
             <p class="text-2xl font-semibold p-4 text-center">Do it all in one place</p>
               <div class="w-full flex flex-col md:flex-row justify-center items-center">
-                <img class="w-full md:w-2/6 object-contain" src="/src/assets/kiirohana_library.jpeg">
+                <img class="w-full md:w-2/6 object-contain rounded-2xl" src="/src/assets/kiirohana_library.jpeg">
                 <p class="w-full md:w-4/6 p-8 md:text-lg">We provide an app where you can read and watch the shows or series you follow in just one app and easy. Whether reading Manga, Light Novel or Web Novel then Watch your favorite Drama, Anime and Movies with your choice of language.</p>
               </div>
           </div>
+
+
+        </div>
+      </div>
+
+      <div class="p-5">
+        <div class="p-4 shadow-2xl">
+          <p class="text-center font-bold text-3xl my-2">Download</p>
+          <p class="md:text-lg p-10">We have many flavor for your choices with different device support. Please read deve support before installation</p>
+          
+          <CardApp appName="Kiirohana" preview="/src/assets/kiirohana_library.jpeg" :production="false" />
         </div>
       </div>
     </div>
