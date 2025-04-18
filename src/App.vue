@@ -24,8 +24,8 @@ import CardApp from "./components/CardApp.vue"
       </div>
     </div>
 
-    <div class="bg-[#2c0026] p-4">
-      <div class="p-5">
+    <div class="bg-[#2c0026] p-2 md:p-4">
+      <div class="p-3 md:p-5">
         <div class="p-4 shadow-2xl">
           <p class="text-center font-bold text-3xl my-2">What is Miyuna?</p>
           <p class="md:text-lg p-10">We are a multiplatform Read & Watch Series/Novel/Comic app development team. You can enjoy the app for multiple platforms and variety of sweets that you can choose from</p>
@@ -43,7 +43,7 @@ import CardApp from "./components/CardApp.vue"
         </div>
       </div>
 
-      <div class="p-5">
+      <div class="p-3 md:p-5">
         <div class="p-4 shadow-2xl">
           <p class="text-center font-bold text-3xl my-2">Download</p>
           <p class="md:text-lg p-10">We have many flavor for your choices with different device support. Please read deve support before installation</p>
