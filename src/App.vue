@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import CardApp from './components/CardApp.vue'
+import kiirohanaPreview from "./assets/kiirohana_library.jpeg"
 
 import {
   PiPlayDuotone,
@@ -217,7 +218,7 @@ let apps = [
 
         <div class="grid md:grid-cols-2 gap-6">
           <CardApp v-for="app in apps" :key="app.name" :appName="app.name"
-            :previews="['/src/assets/kiirohana_library.jpeg']" :production="app.prod"
+            :previews="[kiirohanaPreview]" :production="app.prod"
             :personalPlatforms="app.personalPlatforms" :comingSoon="app?.comingSoon ?? false" />
         </div>
       </section>
