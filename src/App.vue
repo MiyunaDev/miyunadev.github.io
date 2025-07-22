@@ -60,7 +60,7 @@ let apps = [
   <div class="w-full h-full text-white font-sans">
     <!-- HERO SECTION -->
     <div class="flex flex-col md:flex-row w-full h-full bg-gradient-to-br from-black via-gray-900 to-gray-800 py-6">
-      <div class="w-full md:w-5/12 flex flex-col justify-center items-center px-6 text-center space-y-2">
+      <div class="w-full md:w-5/12 flex flex-col justify-center items-center px-6 text-center space-y-2 my-16 md:my-0">
         <p class="text-3xl font-bold text-pink-500 drop-shadow">Miyuna Developer</p>
         <p class="text-gray-300">Multiplatform series list and tracking</p>
       </div>
@@ -87,7 +87,7 @@ let apps = [
 
       <!-- FEATURE HIGHLIGHT -->
       <section class="bg-gradient-to-br from-pink-600 via-purple-700 to-indigo-800 p-6 rounded-3xl shadow-xl">
-        <h3 class="text-3xl font-semibold text-center mb-4 flex items-center justify-center gap-2">
+        <h3 class="text-3xl font-semibold text-center mb-4 flex flex-col md:flex-row items-center justify-center gap-2">
           <PiPlayDuotone class="w-6 h-6" />
           Do it All in One Place
         </h3>
@@ -99,7 +99,7 @@ let apps = [
       <!-- WELCOME -->
       <section
         class="bg-gradient-to-br from-fuchsia-800 via-pink-600 to-rose-700 p-6 rounded-3xl text-center shadow-md">
-        <h3 class="text-4xl font-bold mb-2 flex justify-center items-center gap-2">
+        <h3 class="text-4xl font-bold mb-2 flex flex-col md:flex-row justify-center items-center gap-2">
           <PiFlowerDuotone class="w-6 h-6 text-pink-100" />
           Welcome to Miyuna
         </h3>
@@ -111,7 +111,7 @@ let apps = [
 
       <!-- CLIENT -->
       <section class="bg-[#431042] p-6 rounded-3xl shadow-md">
-        <h3 class="text-3xl font-semibold text-center text-pink-200 mb-4 flex justify-center gap-2 items-center">
+        <h3 class="text-3xl font-semibold text-center text-pink-200 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
           <PiBrainDuotone class="w-6 h-6" />
           Honoka – Your Private Brain
         </h3>
@@ -136,7 +136,7 @@ let apps = [
 
       <!-- APP -->
       <section class="bg-[#5a1752] p-6 rounded-3xl shadow-md">
-        <h3 class="text-3xl font-semibold text-center text-pink-200 mb-4 flex justify-center gap-2 items-center">
+        <h3 class="text-3xl font-semibold text-center text-pink-200 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
           <PiDeviceMobileDuotone class="w-6 h-6" />
           Miyuna App – One App to Rule It All
         </h3>
@@ -161,7 +161,7 @@ let apps = [
 
       <!-- LICENSE -->
       <section class="bg-[#6a002e] p-6 rounded-3xl shadow-md">
-        <h3 class="text-3xl font-bold text-center text-yellow-300 mb-4 flex justify-center gap-2 items-center">
+        <h3 class="text-3xl font-bold text-center text-yellow-300 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
           <PiWarningCircleDuotone class="w-6 h-6" />
           Use Responsibly, Use Privately
         </h3>
@@ -231,7 +231,7 @@ let apps = [
           </p>
 
           <p>
-            This project is open-source and for <strong>private use only</strong>.
+            This project is close-source and for <strong>private use only</strong>.
             Please respect the terms and creators.
           </p>
 

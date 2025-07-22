@@ -108,7 +108,7 @@ function getIcon(filename: string) {
             </div>
             <div class="flex items-center gap-2">
                 <PiBookOpenDuotone class="w-5 h-5 text-purple-300" />
-                Manga, Web Novels, Light Novels support
+                Epub, PDF, Iframe (Web) support and more
             </div>
             <div class="flex items-center gap-2">
                 <PiDeviceMobileDuotone class="w-5 h-5 text-blue-300" />
@@ -120,14 +120,14 @@ function getIcon(filename: string) {
             </div>
             <div class="flex items-center gap-2">
                 <PiMonitorDuotone class="w-5 h-5 text-rose-300" />
-                Private self-hosting available
+                Connected to the Miyuna Series Ecosystem (Honoka and more)
             </div>
         </div>
 
         <!-- Development Warning -->
         <div v-if="!production"
             class="bg-red-900/30 border border-red-600 text-red-300 px-4 py-3 rounded-lg flex items-center gap-3">
-            <PiWarningCircleDuotone class="w-5 h-5 text-red-400" />
+            <PiWarningCircleDuotone class="hidden md:block w-5 h-5 text-red-400" />
             This application is currently in development and may be unstable or incomplete.
         </div>
 
