@@ -24,6 +24,7 @@ const props = defineProps<{
     production: boolean,
     personalPlatforms: { name: string; icon: any }[]
     comingSoon?: boolean
+    appIcon: string
 }>()
 
 const releases = ref<any[]>([])
@@ -63,9 +64,9 @@ function getIcon(filename: string) {
             <div
                 class="absolute inset-0 bg-gradient-to-br from-yellow-900/70 via-yellow-800/40 to-yellow-900/70 backdrop-blur-sm z-10 flex flex-col items-center justify-center text-yellow-200 px-6 py-10 space-y-2">
                 <PiLockDuotone class="animate-pulse text-3xl" />
-                <p class="text-lg font-semibold tracking-wide">Coming Soon</p>
+                <p class="text-lg font-semibold tracking-wide">{{ releases.length == 0 ? "Coming Soon" : "Beta App"}}</p>
                 <p class="text-sm text-yellow-100/80 text-center">
-                    This flavor is not yet available. Stay tuned for the next release!
+                    {{ releases.length == 0 ? "This flavor is not yet available. Stay tuned for the next release!" : "This flavor is available for test and not stable. Stay tuned for the stable release!" }}
                 </p>
             </div>
             <img :src="previews[0]" class="w-full h-40 object-cover opacity-20 blur-sm" alt="Coming Soon Preview" />
@@ -73,9 +74,10 @@ function getIcon(filename: string) {
 
 
         <!-- Header -->
-        <div class="text-center space-y-2">
-            <h2 class="text-3xl font-bold text-pink-300">{{ appName }}</h2>
-            <p class="text-sm text-gray-400 italic">A Miyuna Series Application</p>
+        <div class="flex flex-col justify-center space-y-2">
+            <img :src="appIcon" class="w-16 h-16 mx-auto rounded-full shadow-lg" alt="App Icon" />
+            <h2 class="text-center text-3xl font-bold text-pink-300">{{ appName }}</h2>
+            <p class="text-center text-sm text-gray-400 italic">A Miyuna Series Application</p>
             <div class="flex justify-center items-center gap-4 text-sm text-white/80">
                 <span class="flex items-center gap-1">
                     <PiArrowCircleDownDuotone class="w-5 h-5" /> {{ downloads.toLocaleString() }} downloads

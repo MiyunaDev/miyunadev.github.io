@@ -3,6 +3,12 @@ import { ref } from 'vue'
 import CardApp from './components/CardApp.vue'
 import kiirohanaPreview from "./assets/kiirohana_library.jpeg"
 
+import kiirohanaIcon from "./assets/icon/kiirohana.png"
+import hanatsukiIcon from "./assets/icon/hanatsuki.png"
+import sakihanaIcon from "./assets/icon/sakihana.png"
+import kohibanaIcon from "./assets/icon/kohibana.png"
+import shirohanaIcon from "./assets/icon/shirohana.png"
+
 import {
   PiPlayDuotone,
   PiFlowerDuotone,
@@ -27,20 +33,15 @@ import {
   PiWarningDiamondDuotone,
   PiAndroidLogo,
   PiWindowsLogo,
-  PiLinuxLogo
+  PiLinuxLogo,
+  PiQuestionMarkDuotone,
+  PiFolderOpenDuotone,
+  PiDownload
 } from 'vue-icons-plus/pi'
 
 let apps = [
   {
-    name: 'Kiirohana', prod: false, personalPlatforms: [
-      { name: 'Android', icon: PiAndroidLogo },
-      { name: 'Windows', icon: PiWindowsLogo },
-      { name: 'Linux', icon: PiLinuxLogo },
-      { name: 'Web', icon: PiGlobeDuotone }
-    ]
-  },
-  {
-    name: 'Hanatsuki', prod: false, personalPlatforms: [
+    name: 'Shirohana', icon: shirohanaIcon, prod: false, personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'Windows', icon: PiWindowsLogo },
       { name: 'Linux', icon: PiLinuxLogo },
@@ -48,10 +49,26 @@ let apps = [
     ], comingSoon: true
   },
   {
-    name: 'Sakihana', prod: false, personalPlatforms: [], comingSoon: true
+    name: 'Kiirohana', icon: kiirohanaIcon, prod: false, personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo },
+      { name: 'Windows', icon: PiWindowsLogo },
+      { name: 'Linux', icon: PiLinuxLogo },
+      { name: 'Web', icon: PiGlobeDuotone }
+    ], comingSoon: true
   },
   {
-    name: 'Kohibana', prod: false, personalPlatforms: [], comingSoon: true
+    name: 'Hanatsuki', icon: hanatsukiIcon, prod: false, personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo },
+      { name: 'Windows', icon: PiWindowsLogo },
+      { name: 'Linux', icon: PiLinuxLogo },
+      { name: 'Web', icon: PiGlobeDuotone }
+    ], comingSoon: true
+  },
+  {
+    name: 'Sakihana', icon: sakihanaIcon, prod: false, personalPlatforms: [], comingSoon: true
+  },
+  {
+    name: 'Kohibana', icon: kohibanaIcon, prod: false, personalPlatforms: [], comingSoon: true
   },
 ]
 </script>
@@ -111,7 +128,8 @@ let apps = [
 
       <!-- CLIENT -->
       <section class="bg-[#431042] p-6 rounded-3xl shadow-md">
-        <h3 class="text-3xl font-semibold text-center text-pink-200 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
+        <h3
+          class="text-3xl font-semibold text-center text-pink-200 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
           <PiBrainDuotone class="w-6 h-6" />
           Honoka – Your Private Brain
         </h3>
@@ -136,7 +154,8 @@ let apps = [
 
       <!-- APP -->
       <section class="bg-[#5a1752] p-6 rounded-3xl shadow-md">
-        <h3 class="text-3xl font-semibold text-center text-pink-200 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
+        <h3
+          class="text-3xl font-semibold text-center text-pink-200 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
           <PiDeviceMobileDuotone class="w-6 h-6" />
           Miyuna App – One App to Rule It All
         </h3>
@@ -161,7 +180,8 @@ let apps = [
 
       <!-- LICENSE -->
       <section class="bg-[#6a002e] p-6 rounded-3xl shadow-md">
-        <h3 class="text-3xl font-bold text-center text-yellow-300 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
+        <h3
+          class="text-3xl font-bold text-center text-yellow-300 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
           <PiWarningCircleDuotone class="w-6 h-6" />
           Use Responsibly, Use Privately
         </h3>
@@ -184,6 +204,47 @@ let apps = [
         </ul>
       </section>
 
+      <!-- <section class="bg-[#330024] p-6 rounded-3xl shadow-xl space-y-10">
+        <h3 class="text-3xl font-bold text-center mb-2 text-purple-200 flex justify-center gap-2 items-center">
+          <PiQuestionMarkDuotone class="w-6 h-6" />
+          Feature Overview
+        </h3>
+
+        <section
+          class="shadow-md text-center text-white space-y-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div class="flex items-center gap-2">
+            <h4 class="w-full bg-[#4a143e] rounded-2xl text-pink-300 font-semibold mb-2 flex items-center gap-2 border border-pink-600 p-6">
+              <PiFolderOpenDuotone class="w-5 h-5 text-pink-300" />
+              Media Server Provided
+            </h4>
+            <a>You have a </a>
+          </div>
+        </section>
+      </section>
+
+      <div class="flex flex-row items-center gap-3">
+        <div class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#351d38] via-[#50284f] to-[#351d38] 
+              hover:brightness-110 transition text-white shadow-inner border border-white/10 backdrop-blur-md">
+          <PiDownload />
+          <p>Prepare Selfhost</p>
+        </div>
+        <div class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#351d38] via-[#50284f] to-[#351d38] 
+              hover:brightness-110 transition text-white shadow-inner border border-white/10 backdrop-blur-md">
+          <PiDownload />
+          <p>Download Miyuna <a class="text-pink-300">Honoka</a> flavor</p>
+        </div>
+        <div class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#351d38] via-[#50284f] to-[#351d38] 
+              hover:brightness-110 transition text-white shadow-inner border border-white/10 backdrop-blur-md">
+          <PiDownload />
+          <p>Download Miyuna <a class="text-red-400">Ruby</a> flavor</p>
+        </div>
+        <div class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#351d38] via-[#50284f] to-[#351d38] 
+              hover:brightness-110 transition text-white shadow-inner border border-white/10 backdrop-blur-md">
+          <PiDownload />
+          <p>Download Miyuna <a class="text-yellow-400">Himawari</a> flavor</p>
+        </div>
+      </div> -->
+
       <!-- DOWNLOAD -->
       <!-- DOWNLOAD SECTION -->
       <section class="bg-[#330024] p-6 rounded-3xl shadow-xl space-y-10">
@@ -192,8 +253,6 @@ let apps = [
           Download
         </h3>
 
-        <!-- Tambahkan Informasi Honoka Dulu -->
-        <!-- 👇 Bagian ini dulu -->
         <section class="bg-[#4a143e] border border-pink-600 p-6 rounded-2xl shadow-md text-center text-white space-y-4">
           <h3 class="text-2xl font-bold text-pink-300 flex justify-center items-center gap-2">
             <PiLockDuotone class="w-6 h-6" />
@@ -211,15 +270,13 @@ let apps = [
           </a>
         </section>
 
-        <!-- Baru Flavor CardApp -->
         <p class="text-lg text-center text-white/80">
           We have many flavors for your device. Please read compatibility details before installing.
         </p>
 
         <div class="grid md:grid-cols-2 gap-6">
-          <CardApp v-for="app in apps" :key="app.name" :appName="app.name"
-            :previews="[kiirohanaPreview]" :production="app.prod"
-            :personalPlatforms="app.personalPlatforms" :comingSoon="app?.comingSoon ?? false" />
+          <CardApp v-for="app in apps" :key="app.name" :appName="app.name" :appIcon="app.icon" :previews="[kiirohanaPreview]"
+            :production="app.prod" :personalPlatforms="app.personalPlatforms" :comingSoon="app?.comingSoon ?? false" />
         </div>
       </section>
 
@@ -243,7 +300,8 @@ let apps = [
               class="hover:text-pink-400 transition">
               License
             </a>
-            <a href="https://github.com/MiyunaDev/Honoka/blob/main/DISCLAIMER.md" class="hover:text-pink-400 transition">
+            <a href="https://github.com/MiyunaDev/Honoka/blob/main/DISCLAIMER.md"
+              class="hover:text-pink-400 transition">
               Terms
             </a>
           </div>
