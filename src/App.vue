@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import CardApp from './components/CardApp.vue'
 import kiirohanaPreview from "./assets/kiirohana_library.jpeg"
 
@@ -10,309 +10,363 @@ import kohibanaIcon from "./assets/icon/kohibana.png"
 import shirohanaIcon from "./assets/icon/shirohana.png"
 
 import {
-  PiPlayDuotone,
-  PiFlowerDuotone,
-  PiBrainDuotone,
-  PiLockDuotone,
-  PiPuzzlePieceDuotone,
-  PiLightbulbDuotone,
-  PiGearSixDuotone,
-  PiWifiSlashDuotone,
-  PiDeviceMobileDuotone,
-  PiPaintBrushDuotone,
-  PiBookOpenDuotone,
-  PiGlobeDuotone,
-  PiBookmarkDuotone,
-  PiSlidersHorizontalDuotone,
-  PiWarningCircleDuotone,
-  PiLockKeyDuotone,
-  PiHandDuotone,
-  PiShieldCheckDuotone,
+  PiMagnifyingGlass,
+  PiX,
   PiDownloadSimpleDuotone,
-  PiProhibitInset,
-  PiWarningDiamondDuotone,
   PiAndroidLogo,
   PiWindowsLogo,
   PiLinuxLogo,
-  PiQuestionMarkDuotone,
-  PiFolderOpenDuotone,
-  PiDownload
+  PiGlobeDuotone,
+  PiCpuDuotone,
+  PiCodeDuotone,
+  PiSparkleDuotone
 } from 'vue-icons-plus/pi'
 
-let apps = [
+type AppItem = {
+  name: string
+  icon: string
+  prod: boolean
+  comingSoon: boolean
+  personalPlatforms: { name: string; icon: any }[]
+  technologies: string[]
+  languages: string[]
+}
+
+const apps: AppItem[] = [
   {
-    name: 'Shirohana', icon: shirohanaIcon, prod: false, personalPlatforms: [
+    name: 'Shirohana',
+    icon: shirohanaIcon,
+    prod: false,
+    comingSoon: true,
+    personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'Windows', icon: PiWindowsLogo },
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
-    ], comingSoon: true
+    ],
+    technologies: ['Apache Cordova'],
+    languages: ['TypeScript']
   },
   {
-    name: 'Kiirohana', icon: kiirohanaIcon, prod: false, personalPlatforms: [
+    name: 'Kiirohana',
+    icon: kiirohanaIcon,
+    prod: false,
+    comingSoon: true,
+    personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'Windows', icon: PiWindowsLogo },
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
-    ], comingSoon: true
+    ],
+    technologies: ['Apache Cordova'],
+    languages: ['TypeScript']
   },
   {
-    name: 'Hanatsuki', icon: hanatsukiIcon, prod: false, personalPlatforms: [
+    name: 'Hanatsuki',
+    icon: hanatsukiIcon,
+    prod: false,
+    comingSoon: true,
+    personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'Windows', icon: PiWindowsLogo },
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
-    ], comingSoon: true
+    ],
+    technologies: ['Apache Cordova'],
+    languages: ['JavaScript']
   },
   {
-    name: 'Sakihana', icon: sakihanaIcon, prod: false, personalPlatforms: [], comingSoon: true
+    name: 'Sakihana',
+    icon: sakihanaIcon,
+    prod: false,
+    comingSoon: true,
+    personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo },
+      { name: 'Windows', icon: PiWindowsLogo },
+      { name: 'Linux', icon: PiLinuxLogo },
+      { name: 'Web', icon: PiGlobeDuotone }
+    ],
+    technologies: ['Apache Cordova'],
+    languages: ['JavaScript']
   },
   {
-    name: 'Kohibana', icon: kohibanaIcon, prod: false, personalPlatforms: [], comingSoon: true
-  },
+    name: 'Kohibana',
+    icon: kohibanaIcon,
+    prod: false,
+    comingSoon: true,
+    personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo },
+      { name: 'Windows', icon: PiWindowsLogo },
+      { name: 'Linux', icon: PiLinuxLogo },
+      { name: 'Web', icon: PiGlobeDuotone }
+    ],
+    technologies: ['Apache Cordova'],
+    languages: ['JavaScript']
+  }
 ]
+
+const search = ref('')
+const selectedPlatform = ref('All')
+const selectedTech = ref('All')
+const selectedLang = ref('All')
+
+const platformOptions = computed(() => {
+  const list = apps.flatMap(i => i.personalPlatforms.map(p => p.name))
+  return ['All', ...new Set(list)]
+})
+
+const techOptions = computed(() => {
+  const list = apps.flatMap(i => i.technologies)
+  return ['All', ...new Set(list)]
+})
+
+const langOptions = computed(() => {
+  const list = apps.flatMap(i => i.languages)
+  return ['All', ...new Set(list)]
+})
+
+const filteredApps = computed(() => {
+  return apps.filter(app => {
+    const byName =
+      app.name.toLowerCase().includes(search.value.toLowerCase())
+
+    const byPlatform =
+      selectedPlatform.value === 'All' ||
+      app.personalPlatforms.some(
+        p => p.name === selectedPlatform.value
+      )
+
+    const byTech =
+      selectedTech.value === 'All' ||
+      app.technologies.includes(selectedTech.value)
+
+    const byLang =
+      selectedLang.value === 'All' ||
+      app.languages.includes(selectedLang.value)
+
+    return byName && byPlatform && byTech && byLang
+  })
+})
+
+const resetFilter = () => {
+  search.value = ''
+  selectedPlatform.value = 'All'
+  selectedTech.value = 'All'
+  selectedLang.value = 'All'
+}
 </script>
 
 <template>
-  <div class="w-full h-full text-white font-sans">
-    <!-- HERO SECTION -->
-    <div class="flex flex-col md:flex-row w-full h-full bg-gradient-to-br from-black via-gray-900 to-gray-800 py-6">
-      <div class="w-full md:w-5/12 flex flex-col justify-center items-center px-6 text-center space-y-2 my-16 md:my-0">
-        <p class="text-3xl font-bold text-pink-500 drop-shadow">Miyuna Developer</p>
-        <p class="text-gray-300">Multiplatform series list and tracking</p>
-      </div>
-      <div class="w-full md:w-7/12 relative">
-        <div class="absolute inset-0 bg-gradient-to-r from-black via-transparent to-black opacity-70"></div>
-        <img src="/src/assets/kiirohana_library.jpeg"
-          class="object-cover w-full h-full rounded-xl opacity-30 blur-sm" />
-      </div>
+  <div class="min-h-screen bg-slate-950 text-white">
+
+    <!-- HERO -->
+    <section class="relative overflow-hidden">
+  <img :src="kiirohanaPreview" class="absolute inset-0 w-full h-full object-cover opacity-20" />
+
+  <div class="relative max-w-7xl mx-auto px-6 py-28 text-center">
+    <p class="text-fuchsia-300 font-semibold tracking-widest uppercase">
+      Miyuna Ecosystem
+    </p>
+
+    <h1 class="text-6xl font-black mt-4">
+      Read. Watch. Own Your Platform.
+    </h1>
+
+    <p class="max-w-3xl mx-auto mt-6 text-lg text-slate-300">
+      Miyuna is a multiplatform private media ecosystem powered by Honoka server.
+      Read novels, comics, PDFs, web content, and stream your media
+      across Android, Windows, Linux, and Web.
+    </p>
+
+    <div class="mt-8 flex gap-4 justify-center flex-wrap">
+      <a class="px-6 py-3 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500">
+        Explore Apps
+      </a>
+
+      <a class="px-6 py-3 rounded-xl border border-white/20">
+        Learn Ecosystem
+      </a>
     </div>
+  </div>
+</section>
 
-    <!-- MAIN CONTENT -->
-    <div class="bg-[#2c0026] px-4 py-10 md:px-10 space-y-12">
+<section class="max-w-7xl mx-auto px-6 py-20">
+  <h2 class="text-4xl font-bold text-center mb-12">
+    Beautiful Across Devices
+  </h2>
 
-      <!-- WHAT IS MIYUNA -->
-      <section class="text-center">
-        <h2 class="text-4xl font-bold text-purple-300 mb-4 drop-shadow">
-          What is <span class="text-pink-500">Miyuna</span>?
-        </h2>
-        <p class="text-lg text-gray-200 max-w-3xl mx-auto leading-relaxed">
-          <strong>Miyuna</strong> is a multiplatform <em>Read & Watch</em> experience — novels, comics, and series,
-          all in one beautifully crafted app.
-        </p>
-      </section>
+  <div class="grid md:grid-cols-3 gap-6">
+    <img :src="kiirohanaPreview" class="rounded-3xl shadow-xl" />
+    <img :src="kiirohanaPreview" class="rounded-3xl shadow-xl" />
+    <img :src="kiirohanaPreview" class="rounded-3xl shadow-xl" />
+  </div>
+</section>
 
-      <!-- FEATURE HIGHLIGHT -->
-      <section class="bg-gradient-to-br from-pink-600 via-purple-700 to-indigo-800 p-6 rounded-3xl shadow-xl">
-        <h3 class="text-3xl font-semibold text-center mb-4 flex flex-col md:flex-row items-center justify-center gap-2">
-          <PiPlayDuotone class="w-6 h-6" />
-          Do it All in One Place
-        </h3>
-        <p class="md:text-lg text-center md:w-3/4 mx-auto leading-relaxed text-white/90">
-          With Miyuna, you can read and watch the content you love — all in one app.
-        </p>
-      </section>
+<section class="max-w-7xl mx-auto px-6 py-20">
+  <h2 class="text-4xl font-bold text-center mb-12">
+    How It Works
+  </h2>
 
-      <!-- WELCOME -->
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="card">1. Install Honoka Server</div>
+    <div class="card">2. Connect Miyuna App</div>
+    <div class="card">3. Enjoy Private Media Anywhere</div>
+  </div>
+</section>
+
+    <!-- CONTENT -->
+    <main class="max-w-7xl mx-auto px-6 py-10 space-y-8">
+
+      <!-- FILTER PANEL -->
       <section
-        class="bg-gradient-to-br from-fuchsia-800 via-pink-600 to-rose-700 p-6 rounded-3xl text-center shadow-md">
-        <h3 class="text-4xl font-bold mb-2 flex flex-col md:flex-row justify-center items-center gap-2">
-          <PiFlowerDuotone class="w-6 h-6 text-pink-100" />
-          Welcome to Miyuna
-        </h3>
-        <p class="text-lg md:px-12 text-white/90">
-          A world where stories come to life. <br /><br />
-          <strong class="text-pink-200">Miyuna</strong> isn't just another app — it's your personal media sanctuary.
-        </p>
+        class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6 shadow-2xl"
+      >
+        <div class="flex items-center gap-2 mb-5">
+          <PiMagnifyingGlass class="w-5 h-5 text-fuchsia-300" />
+          <h2 class="text-xl font-bold">Search & Filters</h2>
+        </div>
+
+        <div class="grid md:grid-cols-4 gap-4">
+          <input
+            v-model="search"
+            placeholder="Search app..."
+            class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10 outline-none focus:border-fuchsia-400"
+          />
+
+          <select
+            v-model="selectedPlatform"
+            class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10"
+          >
+            <option
+              v-for="item in platformOptions"
+              :key="item"
+              :value="item"
+            >
+              {{ item }}
+            </option>
+          </select>
+
+          <select
+            v-model="selectedTech"
+            class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10"
+          >
+            <option
+              v-for="item in techOptions"
+              :key="item"
+              :value="item"
+            >
+              {{ item }}
+            </option>
+          </select>
+
+          <select
+            v-model="selectedLang"
+            class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10"
+          >
+            <option
+              v-for="item in langOptions"
+              :key="item"
+              :value="item"
+            >
+              {{ item }}
+            </option>
+          </select>
+        </div>
+
+        <div class="flex justify-between items-center mt-5">
+          <p class="text-sm text-slate-400">
+            Showing {{ filteredApps.length }} app(s)
+          </p>
+
+          <button
+            @click="resetFilter"
+            class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-fuchsia-600 hover:bg-fuchsia-500 transition"
+          >
+            <PiX class="w-4 h-4" />
+            Reset
+          </button>
+        </div>
       </section>
 
-      <!-- CLIENT -->
-      <section class="bg-[#431042] p-6 rounded-3xl shadow-md">
-        <h3
-          class="text-3xl font-semibold text-center text-pink-200 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
-          <PiBrainDuotone class="w-6 h-6" />
-          Honoka – Your Private Brain
-        </h3>
-        <ul class="space-y-3 px-6 text-pink-100 text-lg">
-          <li class="flex items-start gap-3">
-            <PiLockDuotone class="w-6 h-6" /> <strong>Self-hosted</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiPuzzlePieceDuotone class="w-6 h-6" /> <strong>Integrates well</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiLightbulbDuotone class="w-6 h-6" /> <strong>Lightweight</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiGearSixDuotone class="w-6 h-6" /> <strong>Configurable</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiWifiSlashDuotone class="w-6 h-6" /> <strong>Private by design</strong>
-          </li>
-        </ul>
-      </section>
+      <!-- APP LIST -->
+      <section
+        class="rounded-3xl border border-white/10 bg-white/5 backdrop-blur-xl p-6"
+      >
+        <div class="flex items-center gap-2 mb-6">
+          <PiDownloadSimpleDuotone class="w-5 h-5 text-fuchsia-300" />
+          <h2 class="text-2xl font-bold">Applications</h2>
+        </div>
 
-      <!-- APP -->
-      <section class="bg-[#5a1752] p-6 rounded-3xl shadow-md">
-        <h3
-          class="text-3xl font-semibold text-center text-pink-200 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
-          <PiDeviceMobileDuotone class="w-6 h-6" />
-          Miyuna App – One App to Rule It All
-        </h3>
-        <ul class="space-y-3 px-6 text-pink-100 text-lg">
-          <li class="flex items-start gap-3">
-            <PiPaintBrushDuotone class="w-6 h-6" /> <strong>Beautiful design</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiBookOpenDuotone class="w-6 h-6" /> <strong>Unified reading</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiGlobeDuotone class="w-6 h-6" /> <strong>Multiplatform</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiBookmarkDuotone class="w-6 h-6" /> <strong>Progress tracking</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiSlidersHorizontalDuotone class="w-6 h-6" /> <strong>Customizable</strong>
-          </li>
-        </ul>
-      </section>
+        <div class="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div
+            v-for="app in filteredApps"
+            :key="app.name"
+            class="rounded-2xl border border-white/10 bg-slate-900/70 p-4 space-y-4"
+          >
+            <CardApp
+              :appName="app.name"
+              :appIcon="app.icon"
+              :previews="[kiirohanaPreview]"
+              :production="app.prod"
+              :personalPlatforms="app.personalPlatforms"
+              :comingSoon="app.comingSoon"
+            />
 
-      <!-- LICENSE -->
-      <section class="bg-[#6a002e] p-6 rounded-3xl shadow-md">
-        <h3
-          class="text-3xl font-bold text-center text-yellow-300 mb-4 flex flex-col md:flex-row justify-center gap-2 items-center">
-          <PiWarningCircleDuotone class="w-6 h-6" />
-          Use Responsibly, Use Privately
-        </h3>
-        <ul class="space-y-4 px-4 text-red-200 text-lg">
-          <li class="flex items-start gap-3">
-            <PiProhibitInset class="w-6 h-6" /> <strong>No redistribution</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiLockKeyDuotone class="w-6 h-6" /> <strong>You manage your data</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiWarningDiamondDuotone class="w-6 h-6" /> <strong>Misuse voids license</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiHandDuotone class="w-6 h-6" /> <strong>Private use only</strong>
-          </li>
-          <li class="flex items-start gap-3">
-            <PiShieldCheckDuotone class="w-6 h-6 text-yellow-300" /> <strong>Respect rights</strong>
-          </li>
-        </ul>
-      </section>
+            <!-- TECH -->
+            <div>
+              <p class="text-sm text-slate-400 mb-2 flex items-center gap-2">
+                <PiCpuDuotone class="w-4 h-4" />
+                Technology
+              </p>
 
-      <!-- <section class="bg-[#330024] p-6 rounded-3xl shadow-xl space-y-10">
-        <h3 class="text-3xl font-bold text-center mb-2 text-purple-200 flex justify-center gap-2 items-center">
-          <PiQuestionMarkDuotone class="w-6 h-6" />
-          Feature Overview
-        </h3>
+              <div class="flex flex-wrap gap-2">
+                <span
+                  v-for="tech in app.technologies"
+                  :key="tech"
+                  class="px-3 py-1 rounded-full bg-fuchsia-500/20 text-fuchsia-200 text-xs"
+                >
+                  {{ tech }}
+                </span>
+              </div>
+            </div>
 
-        <section
-          class="shadow-md text-center text-white space-y-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div class="flex items-center gap-2">
-            <h4 class="w-full bg-[#4a143e] rounded-2xl text-pink-300 font-semibold mb-2 flex items-center gap-2 border border-pink-600 p-6">
-              <PiFolderOpenDuotone class="w-5 h-5 text-pink-300" />
-              Media Server Provided
-            </h4>
-            <a>You have a </a>
+            <!-- LANGUAGE -->
+            <div>
+              <p class="text-sm text-slate-400 mb-2 flex items-center gap-2">
+                <PiCodeDuotone class="w-4 h-4" />
+                Language
+              </p>
+
+              <div class="flex flex-wrap gap-2">
+                <span
+                  v-for="lang in app.languages"
+                  :key="lang"
+                  class="px-3 py-1 rounded-full bg-cyan-500/20 text-cyan-200 text-xs"
+                >
+                  {{ lang }}
+                </span>
+              </div>
+            </div>
           </div>
-        </section>
-      </section>
-
-      <div class="flex flex-row items-center gap-3">
-        <div class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#351d38] via-[#50284f] to-[#351d38] 
-              hover:brightness-110 transition text-white shadow-inner border border-white/10 backdrop-blur-md">
-          <PiDownload />
-          <p>Prepare Selfhost</p>
         </div>
-        <div class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#351d38] via-[#50284f] to-[#351d38] 
-              hover:brightness-110 transition text-white shadow-inner border border-white/10 backdrop-blur-md">
-          <PiDownload />
-          <p>Download Miyuna <a class="text-pink-300">Honoka</a> flavor</p>
-        </div>
-        <div class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#351d38] via-[#50284f] to-[#351d38] 
-              hover:brightness-110 transition text-white shadow-inner border border-white/10 backdrop-blur-md">
-          <PiDownload />
-          <p>Download Miyuna <a class="text-red-400">Ruby</a> flavor</p>
-        </div>
-        <div class="flex items-center gap-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#351d38] via-[#50284f] to-[#351d38] 
-              hover:brightness-110 transition text-white shadow-inner border border-white/10 backdrop-blur-md">
-          <PiDownload />
-          <p>Download Miyuna <a class="text-yellow-400">Himawari</a> flavor</p>
-        </div>
-      </div> -->
 
-      <!-- DOWNLOAD -->
-      <!-- DOWNLOAD SECTION -->
-      <section class="bg-[#330024] p-6 rounded-3xl shadow-xl space-y-10">
-        <h3 class="text-3xl font-bold text-center mb-2 text-purple-200 flex justify-center gap-2 items-center">
-          <PiDownloadSimpleDuotone class="w-6 h-6" />
-          Download
-        </h3>
-
-        <section class="bg-[#4a143e] border border-pink-600 p-6 rounded-2xl shadow-md text-center text-white space-y-4">
-          <h3 class="text-2xl font-bold text-pink-300 flex justify-center items-center gap-2">
-            <PiLockDuotone class="w-6 h-6" />
-            Honoka Required
-          </h3>
-          <p class="text-white/90 max-w-2xl mx-auto leading-relaxed">
-            All client apps require the <strong>Honoka</strong> backend to function properly.
-            You must set up your own self-hosted server first.
-            Full installation instructions and system releases are available on the official repository.
-          </p>
-          <a href="https://github.com/MiyunaDev/Honoka" target="_blank"
-            class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-gradient-to-r from-pink-700 via-purple-700 to-indigo-700 text-white font-semibold shadow-md hover:brightness-110 transition">
-            <PiDownloadDuotone class="w-5 h-5" />
-            Go to Honoka Repository
-          </a>
-        </section>
-
-        <p class="text-lg text-center text-white/80">
-          We have many flavors for your device. Please read compatibility details before installing.
-        </p>
-
-        <div class="grid md:grid-cols-2 gap-6">
-          <CardApp v-for="app in apps" :key="app.name" :appName="app.name" :appIcon="app.icon" :previews="[kiirohanaPreview]"
-            :production="app.prod" :personalPlatforms="app.personalPlatforms" :comingSoon="app?.comingSoon ?? false" />
+        <div
+          v-if="filteredApps.length === 0"
+          class="text-center py-12 text-slate-400"
+        >
+          No applications found.
         </div>
       </section>
+    </main>
 
-      <!-- FOOTER -->
-      <footer class="bg-black text-white/70 py-8 text-sm mt-20 border-t border-white/10">
-        <div class="max-w-4xl mx-auto px-4 flex flex-col items-center space-y-3 text-center">
-          <p class="text-white/80">
-            Built with ♥ by <strong class="text-pink-400">Miyuna Developer</strong>
-          </p>
-
-          <p>
-            This project is close-source and for <strong>private use only</strong>.
-            Please respect the terms and creators.
-          </p>
-
-          <div class="flex gap-4 text-white/70">
-            <a href="https://github.com/MiyunaDev" target="_blank" class="hover:text-pink-400 transition">
-              GitHub
-            </a>
-            <a href="https://github.com/MiyunaDev/Honoka/blob/main/LICENSE.md" target="_blank"
-              class="hover:text-pink-400 transition">
-              License
-            </a>
-            <a href="https://github.com/MiyunaDev/Honoka/blob/main/DISCLAIMER.md"
-              class="hover:text-pink-400 transition">
-              Terms
-            </a>
-          </div>
-
-          <p class="text-xs text-white/30 mt-2">
-            © {{ new Date().getFullYear() }} Miyuna. All rights reserved.
-          </p>
-        </div>
-      </footer>
-
-
-    </div>
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 mt-10">
+      <div
+        class="max-w-7xl mx-auto px-6 py-8 text-sm text-slate-400 flex flex-col md:flex-row justify-between gap-4"
+      >
+        <p>© {{ new Date().getFullYear() }} Miyuna Developer</p>
+        <p>Modern UI • Responsive • Fast Filtering</p>
+      </div>
+    </footer>
   </div>
 </template>
