@@ -1,3 +1,6 @@
+Aku ingin kamu membantuku mengisi seusai itu. Tanpa merubah tampilan sama sekali, dan tetap menjaga konsistensi nya.
+Ubah bagian App.vue ini cocok dengan itu
+
 <script lang="ts" setup>
 import { computed, ref } from 'vue'
 import CardApp from './components/CardApp.vue'
@@ -8,6 +11,8 @@ import hanatsukiIcon from "./assets/icon/hanatsuki.png"
 import sakihanaIcon from "./assets/icon/sakihana.png"
 import kohibanaIcon from "./assets/icon/kohibana.png"
 import shirohanaIcon from "./assets/icon/shirohana.png"
+import honokaIcon from "./assets/icon/honoka.png"
+import shinobuIcon from "./assets/icon/shinobu.png"
 
 import {
   PiMagnifyingGlass,
@@ -26,25 +31,108 @@ import {
   PiBookOpenDuotone
 } from 'vue-icons-plus/pi'
 
+type InstallMethod = {
+  type: 'docker' | 'github' | 'download'
+  label?: string
+  image?: string
+  repo?: string
+  steps?: string[]
+}
+
 type AppItem = {
   name: string
   description?: string
   icon: string
+
+  // EXISTING
   prod: boolean
   comingSoon: boolean
-  personalPlatforms: { name: string; icon: any }[]
+  personalPlatforms?: { name: string; icon: any }[]
   technologies: string[]
   languages: string[]
   features?: { icon: any; text: string }[]
+
+  // NEW (non-breaking)
+  role?: 'client' | 'server'
+  installMethods?: InstallMethod[]
 }
 
 const apps: AppItem[] = [
+  {
+    name: 'Honoka',
+    description: 'Optional self-hosted backend for full privacy and control. Used for private media tracking and listing',
+    icon: honokaIcon,
+    prod: false,
+    comingSoon: false,
+    role: 'server',
+    technologies: ['Node.js', 'Docker'],
+    languages: ['CoffeeScript'],
+    installMethods: [
+      {
+        type: 'docker',
+        label: 'Quick Start (Docker)',
+        image: 'ghcr.io/miyuna/shinobu',
+        steps: [
+          'Pull image from registry',
+          'Run container',
+          'Expose port',
+          'Connect from client app'
+        ]
+      },
+      {
+        type: 'github',
+        label: 'Manual Setup',
+        repo: 'https://github.com/miyuna/shinobu',
+        steps: [
+          'Clone repository',
+          'Install dependencies',
+          'Configure environment',
+          'Run server'
+        ]
+      }
+    ]
+  },
+  {
+    name: 'Shinobu',
+    description: 'Optional self-hosted backend for full privacy and control. Used for private media streaming, reading and management.',
+    icon: shinobuIcon,
+    prod: false,
+    comingSoon: false,
+    role: 'server',
+    technologies: ['Node.js', 'Docker'],
+    languages: ['JavaScript'],
+    installMethods: [
+      {
+        type: 'docker',
+        label: 'Quick Start (Docker)',
+        image: 'ghcr.io/miyuna/shinobu',
+        steps: [
+          'Pull image from registry',
+          'Run container',
+          'Expose port',
+          'Connect from client app'
+        ]
+      },
+      {
+        type: 'github',
+        label: 'Manual Setup',
+        repo: 'https://github.com/miyuna/shinobu',
+        steps: [
+          'Clone repository',
+          'Install dependencies',
+          'Configure environment',
+          'Run server'
+        ]
+      }
+    ]
+  },
   {
     name: 'Shirohana',
     description: 'A modern, lightweight novel and comic reader with deep library management.',
     icon: shirohanaIcon,
     prod: false,
     comingSoon: true,
+    role: 'client',
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -55,6 +143,9 @@ const apps: AppItem[] = [
     ],
     technologies: ['Apache Cordova'],
     languages: ['TypeScript'],
+    installMethods: [
+      { type: 'download' }
+    ],
     features: [
       { icon: PiBookOpenDuotone, text: 'EPUB & PDF support' },
       { icon: PiSparkleDuotone, text: 'Clean reading mode' },
@@ -62,12 +153,14 @@ const apps: AppItem[] = [
       { icon: PiCodeDuotone, text: 'Custom themes' }
     ]
   },
+
   {
     name: 'Kiirohana',
     description: 'Your private media vault for streaming and managing your own digital collection.',
     icon: kiirohanaIcon,
     prod: false,
     comingSoon: true,
+    role: 'client',
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -78,6 +171,9 @@ const apps: AppItem[] = [
     ],
     technologies: ['Apache Cordova'],
     languages: ['TypeScript'],
+    installMethods: [
+      { type: 'download' }
+    ],
     features: [
       { icon: PiPlayDuotone, text: 'High-speed streaming' },
       { icon: PiCpuDuotone, text: 'Hardware accelerated' },
@@ -91,6 +187,7 @@ const apps: AppItem[] = [
     icon: hanatsukiIcon,
     prod: false,
     comingSoon: true,
+    role: 'client',
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -100,14 +197,19 @@ const apps: AppItem[] = [
       { name: 'Web', icon: PiGlobeDuotone }
     ],
     technologies: ['Apache Cordova'],
-    languages: ['JavaScript']
+    languages: ['JavaScript'],
+    installMethods: [
+      { type: 'download' }
+    ]
   },
+
   {
     name: 'Sakihana',
     description: 'Lightweight and fast media viewer designed for efficiency.',
     icon: sakihanaIcon,
     prod: false,
     comingSoon: true,
+    role: 'client',
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -117,7 +219,10 @@ const apps: AppItem[] = [
       { name: 'Web', icon: PiGlobeDuotone }
     ],
     technologies: ['Apache Cordova'],
-    languages: ['JavaScript']
+    languages: ['JavaScript'],
+    installMethods: [
+      { type: 'download' }
+    ]
   },
   {
     name: 'Kohibana',
@@ -125,6 +230,7 @@ const apps: AppItem[] = [
     icon: kohibanaIcon,
     prod: false,
     comingSoon: true,
+    role: 'client',
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -134,7 +240,10 @@ const apps: AppItem[] = [
       { name: 'Web', icon: PiGlobeDuotone }
     ],
     technologies: ['Apache Cordova'],
-    languages: ['JavaScript']
+    languages: ['JavaScript'],
+    installMethods: [
+      { type: 'download' }
+    ]
   }
 ]
 
@@ -144,17 +253,19 @@ const selectedTech = ref('All')
 const selectedLang = ref('All')
 
 const platformOptions = computed(() => {
-  const list = apps.flatMap(i => i.personalPlatforms.map(p => p.name))
+  const list = apps.flatMap(i =>
+    (i.personalPlatforms ?? []).map(p => p.name)
+  )
   return ['All', ...new Set(list)]
 })
 
 const techOptions = computed(() => {
-  const list = apps.flatMap(i => i.technologies)
+  const list = apps.flatMap(i => i.technologies ?? [])
   return ['All', ...new Set(list)]
 })
 
 const langOptions = computed(() => {
-  const list = apps.flatMap(i => i.languages)
+  const list = apps.flatMap(i => i.languages ?? [])
   return ['All', ...new Set(list)]
 })
 
@@ -163,19 +274,23 @@ const filteredApps = computed(() => {
     const byName =
       app.name.toLowerCase().includes(search.value.toLowerCase())
 
+    // ✅ PLATFORM FILTER (skip untuk server)
     const byPlatform =
       selectedPlatform.value === 'All' ||
-      app.personalPlatforms.some(
+      app.role === 'server' ||
+      (app.personalPlatforms ?? []).some(
         p => p.name === selectedPlatform.value
       )
 
+    // ✅ TECH FILTER (safe)
     const byTech =
       selectedTech.value === 'All' ||
-      app.technologies.includes(selectedTech.value)
+      (app.technologies ?? []).includes(selectedTech.value)
 
+    // ✅ LANGUAGE FILTER (safe)
     const byLang =
       selectedLang.value === 'All' ||
-      app.languages.includes(selectedLang.value)
+      (app.languages ?? []).includes(selectedLang.value)
 
     return byName && byPlatform && byTech && byLang
   })
@@ -205,10 +320,10 @@ const resetFilter = () => {
           Read. Watch. Own Your Platform.
         </h1>
 
-        <p class="max-w-2xl mx-auto mt-5 sm:mt-6 text-sm sm:text-base lg:text-lg text-slate-300">
-          Miyuna is a multiplatform private media ecosystem powered by Honoka server.
-          Read novels, comics, PDFs, web content, and stream your media across Android,
-          Windows, Linux, and Web.
+        <p class="mt-6 text-slate-300 max-w-xl mx-auto">
+          Multi-platform private media ecosystem.
+          Works instantly out of the box.
+          Self-host when you need full control.
         </p>
 
         <div class="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
@@ -235,23 +350,38 @@ const resetFilter = () => {
       </div>
     </section>
 
-   <section class="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-20">
-  <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-center mb-10 sm:mb-12">
-    How It Works
-  </h2>
+    <!-- QUICK START -->
+    <section class="max-w-6xl mx-auto py-16">
+      <h2 class="text-2xl font-bold mb-8">Quick Start</h2>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-    <div class="p-5 rounded-2xl border border-white/10 bg-white/5">
-      1. Install Honoka Server
-    </div>
-    <div class="p-5 rounded-2xl border border-white/10 bg-white/5">
-      2. Connect Miyuna App
-    </div>
-    <div class="p-5 rounded-2xl border border-white/10 bg-white/5">
-      3. Enjoy Private Media Anywhere
-    </div>
-  </div>
-</section>
+      <div class="grid sm:grid-cols-3 gap-6 text-sm">
+
+        <!-- Step 1 -->
+        <div class="bg-black/40 p-6 rounded-xl border border-white/10">
+          <div class="text-lg font-semibold mb-2">1. Install App</div>
+          <p class="text-white/70">
+            Download Shirohana, Kiirohana, or other Miyuna clients.
+          </p>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="bg-black/40 p-6 rounded-xl border border-white/10">
+          <div class="text-lg font-semibold mb-2">2. Open & Enjoy</div>
+          <p class="text-white/70">
+            Launch the app. It works immediately with our public media backend, no setup required.
+          </p>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="bg-black/40 p-6 rounded-xl border border-white/10">
+          <div class="text-lg font-semibold mb-2">3. Optional: Self-Host</div>
+          <p class="text-white/70">
+            Run Shinobu or Honoka for full control, privacy, and your own media backend.
+          </p>
+        </div>
+
+      </div>
+    </section>
 
     <!-- CONTENT -->
     <main id="apps" class="max-w-7xl mx-auto px-4 sm:px-6 py-10 space-y-8">
@@ -267,19 +397,22 @@ const resetFilter = () => {
           <input v-model="search" placeholder="Search app..."
             class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10 outline-none focus:border-fuchsia-400 text-sm w-full" />
 
-          <select v-model="selectedPlatform" class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10 text-sm w-full">
+          <select v-model="selectedPlatform"
+            class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10 text-sm w-full">
             <option v-for="item in platformOptions" :key="item" :value="item">
               {{ item }}
             </option>
           </select>
 
-          <select v-model="selectedTech" class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10 text-sm w-full">
+          <select v-model="selectedTech"
+            class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10 text-sm w-full">
             <option v-for="item in techOptions" :key="item" :value="item">
               {{ item }}
             </option>
           </select>
 
-          <select v-model="selectedLang" class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10 text-sm w-full">
+          <select v-model="selectedLang"
+            class="px-4 py-3 rounded-xl bg-slate-900 border border-white/10 text-sm w-full">
             <option v-for="item in langOptions" :key="item" :value="item">
               {{ item }}
             </option>
@@ -307,19 +440,11 @@ const resetFilter = () => {
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <CardApp 
-            v-for="app in filteredApps" :key="app.name"
-            :appName="app.name" 
-            :appDescription="app.description"
-            :appIcon="app.icon" 
-            :previews="[kiirohanaPreview]" 
-            :production="app.prod"
-            :personalPlatforms="app.personalPlatforms" 
-            :comingSoon="app.comingSoon"
-            :features="app.features"
-            :technologies="app.technologies"
-            :languages="app.languages"
-          />
+          <CardApp v-for="app in filteredApps" :key="app.name" :appName="app.name" :appDescription="app.description"
+            :appIcon="app.icon" :previews="[kiirohanaPreview]" :production="app.prod"
+            :personalPlatforms="app.personalPlatforms" :comingSoon="app.comingSoon" :features="app.features"
+            :technologies="app.technologies" :languages="app.languages" :role="app.role"
+            :installMethods="app.installMethods" />
         </div>
 
         <div v-if="filteredApps.length === 0" class="text-center py-12 text-slate-400">
@@ -331,8 +456,8 @@ const resetFilter = () => {
     <!-- FOOTER -->
     <footer class="border-t border-white/10 mt-10">
       <div class="max-w-7xl mx-auto px-6 py-8 text-sm text-slate-400 flex flex-col md:flex-row justify-between gap-4">
-            <p>© {{ new Date().getFullYear() }} Miyuna Developer</p>
-            <p>Modern UI • Responsive • Fast Filtering</p>
+        <p>© {{ new Date().getFullYear() }} Miyuna Developer</p>
+        <p>Modern UI • Responsive • Fast Filtering</p>
       </div>
     </footer>
   </div>
