@@ -391,8 +391,10 @@ function getIcon(filename: string) {
         </a>
 
         <button v-if="otherAssets.length" @click="expanded = !expanded"
-          class="w-full py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors">
-          {{ expanded ? "Hide" : (matchedAsset ? "Other Downloads" : "Available Downloads") }}
+          class="w-full py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 flex justify-between items-center px-4 transition-colors">
+          <span class="font-medium text-slate-200">{{ expanded ? "Hide" : (matchedAsset ? "Other Downloads" : "Available Downloads") }}</span>
+          <PiCaretDownDuotone class="w-5 h-5 transition-transform duration-300"
+            :class="expanded ? 'rotate-180' : ''" />
         </button>
 
         <div v-if="expanded" class="flex flex-col gap-2.5">
