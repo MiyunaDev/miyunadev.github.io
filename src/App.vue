@@ -28,7 +28,14 @@ import {
   PiMonitorDuotone,
   PiDeviceMobileDuotone,
   PiPlayDuotone,
-  PiBookOpenDuotone
+  PiBookOpenDuotone,
+  PiQuestionMark,
+  PiCircleNotch,
+  PiMicrosoftOutlookLogo,
+  PiDevices,
+  PiDotsNine,
+  PiAmazonLogo,
+  PiAppleLogo
 } from 'vue-icons-plus/pi'
 
 type InstallMethod = {
@@ -47,7 +54,7 @@ type AppItem = {
   // EXISTING
   prod: boolean
   comingSoon: boolean
-  personalPlatforms?: { name: string; icon: any }[]
+  personalPlatforms?: { name: string; icon: any; rare?: boolean }[]
   technologies: string[]
   languages: string[]
   features?: { icon: any; text: string }[]
@@ -67,6 +74,11 @@ const apps: AppItem[] = [
     role: 'server',
     technologies: ['Node.js', 'Docker'],
     languages: ['CoffeeScript'],
+    features: [
+      { icon: PiBookOpenDuotone, text: 'Media tracking' },
+      { icon: PiCpuDuotone, text: 'Efficient performance' },
+      { icon: PiGlobeDuotone, text: 'Remote access' },
+    ],
     installMethods: [
       {
         type: 'docker',
@@ -128,7 +140,7 @@ const apps: AppItem[] = [
   },
   {
     name: 'Shirohana',
-    description: 'A modern, lightweight novel and comic reader with deep library management.',
+    description: 'A modern, with elegant interface, designed for streaming, reading with your personal media server and managing your digital library.',
     icon: shirohanaIcon,
     prod: false,
     comingSoon: true,
@@ -141,7 +153,7 @@ const apps: AppItem[] = [
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
     ],
-    technologies: ['Apache Cordova'],
+    technologies: ['Apache Cordova', "React"],
     languages: ['TypeScript'],
     installMethods: [
       { type: 'download' }
@@ -156,7 +168,7 @@ const apps: AppItem[] = [
 
   {
     name: 'Kiirohana',
-    description: 'Your private media vault for streaming and managing your own digital collection.',
+    description: 'A interactive and more animated UI, designed for streaming, reading with your personal media server and managing your media library.',
     icon: kiirohanaIcon,
     prod: false,
     comingSoon: true,
@@ -169,7 +181,7 @@ const apps: AppItem[] = [
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
     ],
-    technologies: ['Apache Cordova'],
+    technologies: ['Apache Cordova', "React"],
     languages: ['TypeScript'],
     installMethods: [
       { type: 'download' }
@@ -183,7 +195,7 @@ const apps: AppItem[] = [
   },
   {
     name: 'Hanatsuki',
-    description: 'Simplified cross-platform media companion for your daily entertainment.',
+    description: 'Simplified version of Kiirohana, designed for streaming and reading with your personal media server and managing your media library with a more straightforward interface.',
     icon: hanatsukiIcon,
     prod: false,
     comingSoon: true,
@@ -196,7 +208,7 @@ const apps: AppItem[] = [
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
     ],
-    technologies: ['Apache Cordova'],
+    technologies: ['Apache Cordova@6', "Preact"],
     languages: ['JavaScript'],
     installMethods: [
       { type: 'download' }
@@ -205,7 +217,7 @@ const apps: AppItem[] = [
 
   {
     name: 'Sakihana',
-    description: 'Lightweight and fast media viewer designed for efficiency.',
+    description: 'Old device support version with better compatibility, designed for streaming and reading with your personal media server and managing your media library on older devices.',
     icon: sakihanaIcon,
     prod: false,
     comingSoon: true,
@@ -218,7 +230,7 @@ const apps: AppItem[] = [
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
     ],
-    technologies: ['Apache Cordova'],
+    technologies: ['Apache Cordova@3.6.0', "Vanilla JS"],
     languages: ['JavaScript'],
     installMethods: [
       { type: 'download' }
@@ -226,20 +238,42 @@ const apps: AppItem[] = [
   },
   {
     name: 'Kohibana',
-    description: 'Minimalist media explorer for the Miyuna ecosystem.',
+    description: 'Old device supporting client, designed for streaming and reading with your personal media server and managing your media library on older devices with more limited resources.',
     icon: kohibanaIcon,
     prod: false,
     comingSoon: true,
     role: 'client',
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
-      { name: 'iOS', icon: PiDeviceMobileDuotone },
-      { name: 'Windows', icon: PiWindowsLogo },
-      { name: 'macOS', icon: PiMonitorDuotone },
-      { name: 'Linux', icon: PiLinuxLogo },
-      { name: 'Web', icon: PiGlobeDuotone }
+      { name: 'iOS', icon: PiAppleLogo }, // Menggunakan Apple Logo lebih umum untuk iOS
+      { name: 'Windows 8', icon: PiWindowsLogo },
+      { 
+        name: "Amazon Fire OS", 
+        icon: PiAmazonLogo, // Menggunakan logo Amazon sebagai representasi Fire OS
+        rare: true
+      },
+      { 
+        name: "BlackBerry OS 6", 
+        icon: PiDotsNine, // BlackBerry identik dengan grid menu atau "berry" dots
+        rare: true
+      },
+      { 
+        name: "BlackBerry OS 10", 
+        icon: PiDevices, // Menunjukkan modernitas BB10 yang sudah full touch
+        rare: true
+      },
+      { 
+        name: "Windows Phone 7/8", 
+        icon: PiMicrosoftOutlookLogo, // Bentuk kotak-kotak (tiles) khas Windows Phone
+        rare: false
+      },
+      { 
+        name: "Tizen", 
+        icon: PiCircleNotch, // Menyerupai bentuk logo Tizen yang melingkar
+        rare: true
+      }
     ],
-    technologies: ['Apache Cordova'],
+    technologies: ['Apache Cordova@3.2.0', "Vanilla JS"],
     languages: ['JavaScript'],
     installMethods: [
       { type: 'download' }
@@ -282,12 +316,10 @@ const filteredApps = computed(() => {
         p => p.name === selectedPlatform.value
       )
 
-    // ✅ TECH FILTER (safe)
     const byTech =
       selectedTech.value === 'All' ||
       (app.technologies ?? []).includes(selectedTech.value)
 
-    // ✅ LANGUAGE FILTER (safe)
     const byLang =
       selectedLang.value === 'All' ||
       (app.languages ?? []).includes(selectedLang.value)

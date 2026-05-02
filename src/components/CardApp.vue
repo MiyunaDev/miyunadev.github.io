@@ -9,7 +9,6 @@ import {
   PiDownloadDuotone,
   PiArrowCircleDownDuotone,
   PiTagDuotone,
-  PiWarningCircleDuotone,
   PiMonitorDuotone,
   PiDeviceMobileDuotone,
   PiGlobeDuotone,
@@ -47,7 +46,7 @@ const props = withDefaults(defineProps<{
   appDescription?: string
   previews?: string[]
   production?: boolean
-  personalPlatforms?: { name: string; icon: any }[]
+  personalPlatforms?: { name: string; icon: any; rare?: boolean }[]
   comingSoon?: boolean
   appIcon: string
   features?: { icon: any; text: string }[]
@@ -81,7 +80,8 @@ const downloads = ref(0)
 const zoomedImage = ref<string | null>(null)
 const loading = ref(true)
 const expanded = ref(false)
-const expandedInstall = ref(false) // State baru untuk server
+const expandedInstall = ref(false)
+const moreDetail = ref(false)
 const detectedOS = ref<"windows" | "android" | "ios" | "mac" | "linux" | "unknown">("unknown")
 const copied = ref(false)
 
@@ -236,7 +236,7 @@ function getIcon(filename: string) {
 
 <template>
   <div
-    class="group relative overflow-hidden rounded-3xl border border-white/10 bg-linear-to-brrom-slate-900 via-slate-900 to-fuchsia-950 shadow-xl transition hover:-translate-y-1">
+    class="group relative overflow-hidden rounded-3xl border border-white/10 bg-linear-to-br from-slate-900 via-slate-900 to-fuchsia-950 shadow-xl transition hover:-translate-y-1">
 
     <div class="relative p-4 sm:p-6 space-y-6">
 
@@ -263,60 +263,81 @@ function getIcon(filename: string) {
         <img :src="appIcon" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border border-white/10 shrink-0" />
 
         <div class="flex-1 min-w-0">
-          <div class="flex items-center justify-between gap-2">
-            <h2 class="text-xl sm:text-2xl font-bold text-white truncate">
-              {{ appName }}
-            </h2>
-            <!-- Platform Badges -->
-            <div v-if="isClient && personalPlatforms?.length" class="flex gap-1 shrink-0">
-              <component v-for="p in personalPlatforms" :key="p.name" :is="p.icon" class="w-4 h-4 text-slate-500"
-                :title="p.name" />
+          <!-- Header: Title & Badges -->
+          <div class="flex flex-wrap items-start justify-between gap-3 mb-2">
+            <div>
+              <div class="flex items-center gap-3">
+                <h2 class="text-xl sm:text-2xl font-bold text-white truncate">
+                  {{ appName }}
+                </h2>
+
+                <!-- Role Badge -->
+                <span :class="[
+                  'text-[10px] uppercase tracking-wider font-semibold px-2 py-0.5 rounded-md border',
+                  role === 'client'
+                    ? 'bg-green-500/10 text-green-400 border-green-500/20'
+                    : 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+                ]">
+                  {{ role === 'client' ? 'App' : 'Self-Hosted' }}
+                </span>
+              </div>
+
+              <!-- Description -->
+              <p class="text-sm text-slate-400 mt-1 line-clamp-2">
+                {{ appDescription || 'Miyuna Ecosystem App' }}
+              </p>
+            </div>
+
+            <!-- Platform Icons (Clean Version) & Not Rare -->
+            <div v-if="personalPlatforms?.length"
+              class="flex items-center gap-2 bg-slate-800/40 p-1.5 rounded-lg border border-white/5">
+              <div class="flex">
+                <component v-for="p in personalPlatforms && personalPlatforms.filter(p => !p.rare)" :key="p.name"
+                  :is="p.icon" class="w-4 h-4 text-slate-400 bg-slate-900 rounded-full ring-2 ring-slate-900"
+                  :title="p.name" />
+              </div>
+              <!-- Show text only if moreDetail is true or platforms are few -->
+              <span v-if="moreDetail || personalPlatforms.length <= 2"
+                class="text-[10px] text-slate-500 font-medium pr-1">
+                {{personalPlatforms.map(p => p.name).join(', ')}}
+              </span>
             </div>
           </div>
 
-          <div class="flex items-center gap-2 mb-2">
-            <span v-if="role === 'client'"
-              class="text-xs px-2 py-1 rounded-lg bg-green-500/10 text-green-400 border border-green-500/20">
-              App
-            </span>
-
-            <span v-else
-              class="text-xs px-2 py-1 rounded-lg bg-yellow-500/10 text-yellow-400 border border-yellow-500/20">
-              Self-Hosted
-            </span>
-          </div>
-
-          <p class="text-sm text-slate-400">
-            {{ appDescription || 'Miyuna Ecosystem App' }}
-          </p>
-
-          <!-- Badges (Download, Tag, Date) - Only for Client / Apps with Releases -->
-          <div v-if="isClient" class="flex flex-wrap gap-3 mt-2 text-[11px] text-slate-300">
-            <span class="flex items-center gap-1 bg-white/5 px-2 py-0.5 rounded-full">
+          <!-- Stats & Metadata -->
+          <div v-if="isClient" class="flex flex-wrap gap-2 mt-3">
+            <!-- Download Count -->
+            <div
+              class="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg text-[11px] text-slate-300 border border-white/5">
               <PiArrowCircleDownDuotone class="w-3.5 h-3.5 text-fuchsia-400" />
-              {{ downloads.toLocaleString() }}
-            </span>
+              <span class="font-medium">{{ downloads.toLocaleString() }}</span>
+            </div>
 
-            <span v-if="latestRelease?.tag_name" @click="copyToClipboard(latestRelease.tag_name)"
-              class="flex items-center gap-1 bg-white/5 px-2 py-0.5 rounded-full cursor-pointer hover:bg-white/10 transition-colors group/tag">
+            <!-- Version Tag -->
+            <button v-if="latestRelease?.tag_name" @click="copyToClipboard(latestRelease.tag_name)"
+              class="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg text-[11px] text-slate-300 border border-white/5 hover:bg-cyan-500/10 hover:border-cyan-500/20 transition-all group">
               <PiTagDuotone class="w-3.5 h-3.5 text-cyan-400" />
-              {{ latestRelease.tag_name }}
+              <span class="font-mono">{{ latestRelease.tag_name }}</span>
               <component :is="copied ? PiCheckCircleDuotone : PiCopyDuotone"
-                class="w-3 h-3 opacity-0 group-hover/tag:opacity-100 transition-opacity" />
-            </span>
+                class="w-3 h-3 opacity-40 group-hover:opacity-100 transition-opacity" />
+            </button>
 
-            <span v-if="lastUpdated" class="flex items-center gap-1 bg-white/5 px-2 py-0.5 rounded-full">
+            <!-- Date -->
+            <div v-if="lastUpdated"
+              class="flex items-center gap-1.5 bg-white/5 px-2.5 py-1 rounded-lg text-[11px] text-slate-300 border border-white/5">
               <PiCalendarDuotone class="w-3.5 h-3.5 text-amber-400" />
               {{ lastUpdated }}
-            </span>
+            </div>
           </div>
 
-          <!-- Docs Button -->
-          <a :href="`https://github.com/MiyunaDev/${appName}`" target="_blank"
-            class="inline-flex mt-3 items-center gap-2 px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs transition-colors">
-            <PiBookOpenDuotone class="w-3.5 h-3.5" />
-            Source Code & Docs
-          </a>
+          <!-- Action Footer -->
+          <div class="flex items-center gap-3 mt-4">
+            <a :href="`https://github.com/MiyunaDev/${appName}`" target="_blank"
+              class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-white/10 text-xs font-medium text-white transition-all active:scale-95">
+              <PiBookOpenDuotone class="w-4 h-4" />
+              Source Code & Docs
+            </a>
+          </div>
         </div>
       </div>
 
@@ -353,7 +374,8 @@ function getIcon(filename: string) {
       </div>
 
       <!-- TECH & LANG -->
-      <div v-if="technologies?.length || languages?.length" class="grid grid-cols-2 gap-4 pt-4 border-t border-white/5">
+      <div v-if="technologies?.length || languages?.length"
+        class="grid grid-cols-2 gap-4 pt-4 border-t border-white/5 mb-8">
         <div v-if="technologies?.length" class="min-w-0">
           <p class="text-[10px] font-bold uppercase tracking-widest text-slate-500 flex items-center gap-1.5 mb-2">
             <PiCpuDuotone class="w-3 h-3" /> Stack
@@ -392,9 +414,8 @@ function getIcon(filename: string) {
 
         <button v-if="otherAssets.length" @click="expanded = !expanded"
           class="w-full py-3 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 flex justify-between items-center px-4 transition-colors">
-          <span class="font-medium text-slate-200">{{ expanded ? "Hide" : (matchedAsset ? "Other Downloads" : "Available Downloads") }}</span>
-          <PiCaretDownDuotone class="w-5 h-5 transition-transform duration-300"
-            :class="expanded ? 'rotate-180' : ''" />
+          <span class="font-medium text-slate-200">{{ expanded ? "Hide" : (matchedAsset ? "Other Downloads" : "Available Downloads")}}</span>
+          <PiCaretDownDuotone class="w-5 h-5 transition-transform duration-300" :class="expanded ? 'rotate-180' : ''" />
         </button>
 
         <div v-if="expanded" class="flex flex-col gap-2.5">
@@ -489,5 +510,11 @@ function getIcon(filename: string) {
           draggable="false" />
       </div>
     </Teleport>
+
+    <!-- Button for more details -->
+    <button v-if="!isServer" @click="moreDetail = !moreDetail"
+      class="mt-auto w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm transition-colors mx-auto">
+      {{ moreDetail ? "Hide Details" : "Show Details" }}
+    </button>
   </div>
 </template>
