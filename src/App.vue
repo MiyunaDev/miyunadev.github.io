@@ -346,7 +346,7 @@ const apps: AppItem[] = [
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
     ],
-    technologies: ["Apache Cordova", 'Vue'],
+    technologies: ["Apache Cordova", 'Svelte'],
     languages: ['TypeScript'],
     installMethods: [
       { type: 'download' }
@@ -368,7 +368,7 @@ const apps: AppItem[] = [
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
     ],
-    technologies: ["Apache Cordova",'Vue'],
+    technologies: ["Apache Cordova",'Svelte'],
     languages: ['JavaScript'],
     installMethods: [
       { type: 'download' }
