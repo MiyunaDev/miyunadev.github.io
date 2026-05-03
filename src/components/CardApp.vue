@@ -170,7 +170,7 @@ onMounted(async () => {
   if (cachedData) {
     try {
       const { data, timestamp } = JSON.parse(cachedData)
-      if (Date.now() - timestamp < 60 * 1000) {
+      if (Date.now() - timestamp < 60 * 60 * 1000) {
         releases.value = data
         updateDownloadCount(data)
         loading.value = false
