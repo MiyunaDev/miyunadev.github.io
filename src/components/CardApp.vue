@@ -513,7 +513,7 @@ function getIcon(filename: string) {
     </Teleport>
 
     <!-- Button for more details -->
-    <button v-if="!isServer" @click="moreDetail = !moreDetail"
+    <button @click="moreDetail = !moreDetail"
       class="mt-auto w-full py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-sm transition-colors mx-auto">
       {{ moreDetail ? "Hide Details" : "Show Details" }}
     </button>
