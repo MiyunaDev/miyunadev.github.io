@@ -37,6 +37,7 @@ interface GithubAsset {
 interface GithubRelease {
   tag_name: string
   published_at: string
+  body: string
   assets: GithubAsset[]
 }
 
@@ -106,6 +107,23 @@ const latestRelease = computed(() => releases.value?.[0] || null)
 const lastUpdated = computed(() => {
   if (!latestRelease.value?.published_at) return null
   return timeAgo(latestRelease.value.published_at)
+})
+
+/* ================= TAMBAHKAN DI BAGIAN STATE ================= */
+const newest = computed(() => {
+  if (!latestRelease.value?.published_at) return false
+  const publishedDate = new Date(latestRelease.value.published_at)
+  const thirtyDaysAgo = new Date()
+  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30) // Anggap "New" jika < 30 hari
+  return publishedDate > thirtyDaysAgo
+})
+
+// Fungsi untuk membersihkan markdown sederhana dari GitHub body (opsional)
+const formattedChangelog = computed(() => {
+  if (!latestRelease.value?.body) return "No changelog provided."
+  // Kamu bisa menggunakan library marked jika ingin render HTML penuh, 
+  // atau biarkan teks mentah/bersihkan sedikit:
+  return latestRelease.value.body
 })
 
 const formatBytes = (bytes: number) => {
@@ -258,6 +276,20 @@ function getIcon(filename: string) {
         </div>
       </div>
 
+      <!-- BADGE STATUS -->
+      <div class="flex gap-2 mb-4">
+        <div v-if="newest"
+          class="flex items-center gap-2 bg-fuchsia-500/10 text-fuchsia-400 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg border border-fuchsia-500/20">
+          <PiSparklesDuotone class="w-3.5 h-3.5" />
+          <span>Newest Update</span>
+        </div>
+        <div v-else-if="downloads > 1000"
+          class="flex items-center gap-2 bg-green-500/10 text-green-400 text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded-lg border border-green-500/20">
+          <PiHeartDuotone class="w-3.5 h-3.5" />
+          <span>Popular</span>
+        </div>
+      </div>
+
       <!-- HEADER -->
       <div class="flex flex-col sm:flex-row sm:items-start gap-4">
         <img :src="appIcon" class="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl border border-white/10 shrink-0" />
@@ -283,8 +315,7 @@ function getIcon(filename: string) {
               </div>
 
               <!-- Description -->
-              <p class="text-sm text-slate-400 mt-1"
-              :class="moreDetail ? 'line-clamp-none' : 'line-clamp-2'">
+              <p class="text-sm text-slate-400 mt-1" :class="moreDetail ? 'line-clamp-none' : 'line-clamp-2'">
                 {{ appDescription || 'Miyuna Ecosystem App' }}
               </p>
             </div>
@@ -343,7 +374,7 @@ function getIcon(filename: string) {
       </div>
 
       <!-- PREVIEW -->
-      <div v-if="previews?.length" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div v-if="previews?.length > 0" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
         <img v-for="(img, i) in previews" :key="i" :src="img" @click="zoomedImage = img"
           class="h-28 sm:h-32 w-full object-cover rounded-2xl border border-white/10 cursor-zoom-in hover:scale-[1.02] transition" />
       </div>
@@ -495,6 +526,28 @@ function getIcon(filename: string) {
         Loading...
       </div>
     </div>
+
+    <!-- DETAILED CHANGELOG (Muncul saat Show Details) -->
+    <transition enter-active-class="transition duration-300 ease-out" enter-from-class="transform scale-95 opacity-0"
+      enter-to-class="transform scale-100 opacity-100">
+      <div v-if="moreDetail && latestRelease" class="space-y-4 pt-4 border-t border-white/5">
+        <div class="bg-black/20 rounded-2xl p-4 border border-white/5">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-bold text-white flex items-center gap-2">
+              <PiTagDuotone class="text-cyan-400 w-4 h-4" />
+              What's New in {{ latestRelease.tag_name }}
+            </h3>
+            <span class="text-[10px] text-slate-500">{{ lastUpdated }}</span>
+          </div>
+
+          <!-- Content Changelog -->
+          <div
+            class="text-xs text-slate-400 leading-relaxed whitespace-pre-line max-h-48 overflow-y-auto custom-scrollbar">
+            {{ latestRelease.body || 'Refining features and fixing bugs for better performance.' }}
+          </div>
+        </div>
+      </div>
+    </transition>
 
     <!-- IMAGE MODAL FIXED -->
     <Teleport to="body">

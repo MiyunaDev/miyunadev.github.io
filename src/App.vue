@@ -51,6 +51,7 @@ type AppItem = {
   name: string
   description?: string
   icon: string
+  previews?: string[]
 
   // EXISTING
   prod: boolean
@@ -146,6 +147,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -174,6 +176,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [kiirohanaPreview],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -201,6 +204,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -223,6 +227,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -244,6 +249,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiAppleLogo }, // Menggunakan Apple Logo lebih umum untuk iOS
@@ -287,6 +293,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -308,6 +315,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -329,6 +337,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -350,6 +359,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiDeviceMobileDuotone },
@@ -371,6 +381,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo },
     ],
@@ -387,6 +398,7 @@ const apps: AppItem[] = [
     prod: false,
     comingSoon: true,
     role: 'client',
+    previews: [],
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo }
     ],
@@ -395,7 +407,41 @@ const apps: AppItem[] = [
     installMethods: [
       { type: 'download' }
     ]
-  }
+  },
+  {
+    name: "Dragon",
+    description: "Experimental client for streaming and reading with your personal media server and managing your media library on various platforms with a focus on performance and minimalism.",
+    icon: upcomingIcon,
+    prod: false,
+    comingSoon: true,
+    role: 'client',
+    previews: [],
+    personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo }
+    ],
+    technologies: ['Android', "Jetpack Compose"],
+    languages: ['Java'],
+    installMethods: [
+      { type: 'download' }
+    ]
+  },
+  {
+    name: "Gryphon",
+    description: "Experimental client for streaming and reading with your personal media server and managing your media library on various platforms with a focus on performance and minimalism.",
+    icon: upcomingIcon,
+    prod: false,
+    comingSoon: true,
+    role: 'client',
+    previews: [],
+    personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo }
+    ],
+    technologies: ['Android', "Jetpack Compose"],
+    languages: ['Java'],
+    installMethods: [
+      { type: 'download' }
+    ]
+  },
 ]
 
 const search = ref('')
@@ -590,7 +636,7 @@ const resetFilter = () => {
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <CardApp v-for="app in filteredApps" :key="app.name" :appName="app.name" :appDescription="app.description"
-            :appIcon="app.icon" :previews="[kiirohanaPreview]" :production="app.prod"
+            :appIcon="app.icon" :previews="app.previews" :production="app.prod"
             :personalPlatforms="app.personalPlatforms" :comingSoon="app.comingSoon" :features="app.features"
             :technologies="app.technologies" :languages="app.languages" :role="app.role"
             :installMethods="app.installMethods" />
