@@ -283,7 +283,8 @@ function getIcon(filename: string) {
               </div>
 
               <!-- Description -->
-              <p class="text-sm text-slate-400 mt-1 line-clamp-2">
+              <p class="text-sm text-slate-400 mt-1"
+              :class="moreDetail ? 'line-clamp-none' : 'line-clamp-2'">
                 {{ appDescription || 'Miyuna Ecosystem App' }}
               </p>
             </div>
