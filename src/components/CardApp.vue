@@ -118,13 +118,17 @@ const newest = computed(() => {
   return publishedDate > thirtyDaysAgo
 })
 
-// Fungsi untuk membersihkan markdown sederhana dari GitHub body (opsional)
+import { marked } from 'marked';
+
+// ... di dalam computed formattedChangelog
 const formattedChangelog = computed(() => {
-  if (!latestRelease.value?.body) return "No changelog provided."
-  // Kamu bisa menggunakan library marked jika ingin render HTML penuh, 
-  // atau biarkan teks mentah/bersihkan sedikit:
-  return latestRelease.value.body
-})
+  if (!latestRelease.value?.body) return "No changelog provided.";
+  
+  return marked.parse(latestRelease.value.body, {
+    breaks: true,
+    gfm: true
+  });
+});
 
 const formatBytes = (bytes: number) => {
   if (!bytes && bytes !== 0) return "Unknown"
@@ -542,8 +546,8 @@ function getIcon(filename: string) {
 
           <!-- Content Changelog -->
           <div
-            class="text-xs text-slate-400 leading-relaxed whitespace-pre-line max-h-48 overflow-y-auto custom-scrollbar">
-            {{ latestRelease.body || 'Refining features and fixing bugs for better performance.' }}
+            class="changelog-container text-xs text-slate-400 leading-relaxed max-h-48 overflow-y-auto custom-scrollbar pr-2"
+            v-html="formattedChangelog">
           </div>
         </div>
       </div>

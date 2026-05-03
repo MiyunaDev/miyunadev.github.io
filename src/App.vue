@@ -254,28 +254,28 @@ const apps: AppItem[] = [
       { name: 'Android', icon: PiAndroidLogo },
       { name: 'iOS', icon: PiAppleLogo }, // Menggunakan Apple Logo lebih umum untuk iOS
       { name: 'Windows 8', icon: PiWindowsLogo },
-      { 
-        name: "Amazon Fire OS", 
+      {
+        name: "Amazon Fire OS",
         icon: PiAmazonLogo, // Menggunakan logo Amazon sebagai representasi Fire OS
         rare: true
       },
-      { 
-        name: "BlackBerry OS 6", 
+      {
+        name: "BlackBerry OS 6",
         icon: PiDotsNine, // BlackBerry identik dengan grid menu atau "berry" dots
         rare: true
       },
-      { 
-        name: "BlackBerry OS 10", 
+      {
+        name: "BlackBerry OS 10",
         icon: PiDevices, // Menunjukkan modernitas BB10 yang sudah full touch
         rare: true
       },
-      { 
-        name: "Windows Phone 7/8", 
+      {
+        name: "Windows Phone 7/8",
         icon: PiMicrosoftOutlookLogo, // Bentuk kotak-kotak (tiles) khas Windows Phone
         rare: false
       },
-      { 
-        name: "Tizen", 
+      {
+        name: "Tizen",
         icon: PiCircleNotch, // Menyerupai bentuk logo Tizen yang melingkar
         rare: true
       }
@@ -324,7 +324,7 @@ const apps: AppItem[] = [
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
     ],
-    technologies: ["Apache Cordova",'Vue'],
+    technologies: ["Apache Cordova", 'Vue'],
     languages: ['JavaScript'],
     installMethods: [
       { type: 'download' }
@@ -368,7 +368,7 @@ const apps: AppItem[] = [
       { name: 'Linux', icon: PiLinuxLogo },
       { name: 'Web', icon: PiGlobeDuotone }
     ],
-    technologies: ["Apache Cordova",'Svelte'],
+    technologies: ["Apache Cordova", 'Svelte'],
     languages: ['JavaScript'],
     installMethods: [
       { type: 'download' }
@@ -419,7 +419,7 @@ const apps: AppItem[] = [
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo }
     ],
-    technologies: ['Android', "Jetpack Compose"],
+    technologies: ['Android'],
     languages: ['Java'],
     installMethods: [
       { type: 'download' }
@@ -436,7 +436,7 @@ const apps: AppItem[] = [
     personalPlatforms: [
       { name: 'Android', icon: PiAndroidLogo }
     ],
-    technologies: ['Android', "Jetpack Compose"],
+    technologies: ['Android'],
     languages: ['Java'],
     installMethods: [
       { type: 'download' }
@@ -491,11 +491,34 @@ const filteredApps = computed(() => {
   })
 })
 
+// ... (import tetap sama)
+
+// --- LOGIKA PAGINATION ---
+const currentPage = ref(1)
+const itemsPerPage = 6 // Kamu bisa ubah angka ini sesuai kebutuhan
+
+// Reset ke halaman 1 setiap kali filter berubah
+import { watch } from 'vue'
+watch([search, selectedPlatform, selectedTech, selectedLang], () => {
+  currentPage.value = 1
+})
+
+const totalPages = computed(() => {
+  return Math.ceil(filteredApps.value.length / itemsPerPage)
+})
+
+const paginatedApps = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage
+  const end = start + itemsPerPage
+  return filteredApps.value.slice(start, end)
+})
+
 const resetFilter = () => {
   search.value = ''
   selectedPlatform.value = 'All'
   selectedTech.value = 'All'
   selectedLang.value = 'All'
+  currentPage.value = 1
 }
 </script>
 
@@ -634,8 +657,9 @@ const resetFilter = () => {
           <h2 class="text-xl sm:text-2xl font-bold">Applications</h2>
         </div>
 
+        <!-- UBAH filteredApps MENJADI paginatedApps -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <CardApp v-for="app in filteredApps" :key="app.name" :appName="app.name" :appDescription="app.description"
+          <CardApp v-for="app in paginatedApps" :key="app.name" :appName="app.name" :appDescription="app.description"
             :appIcon="app.icon" :previews="app.previews" :production="app.prod"
             :personalPlatforms="app.personalPlatforms" :comingSoon="app.comingSoon" :features="app.features"
             :technologies="app.technologies" :languages="app.languages" :role="app.role"
@@ -644,6 +668,30 @@ const resetFilter = () => {
 
         <div v-if="filteredApps.length === 0" class="text-center py-12 text-slate-400">
           No applications found.
+        </div>
+
+        <!-- TAMBAHKAN NAVIGASI PAGINATION DISINI -->
+        <div v-if="totalPages > 1" class="flex justify-center items-center gap-4 mt-10 pt-6 border-t border-white/5">
+          <button @click="currentPage--" :disabled="currentPage === 1"
+            class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 transition text-sm">
+            Previous
+          </button>
+
+          <div class="flex gap-2">
+            <button v-for="page in totalPages" :key="page" @click="currentPage = page" :class="[
+              'w-10 h-10 rounded-lg border transition text-sm font-medium',
+              currentPage === page
+                ? 'bg-fuchsia-600 border-fuchsia-500 text-white'
+                : 'bg-white/5 border-white/10 text-slate-400 hover:border-fuchsia-500/50'
+            ]">
+              {{ page }}
+            </button>
+          </div>
+
+          <button @click="currentPage++" :disabled="currentPage === totalPages"
+            class="px-4 py-2 rounded-lg bg-white/5 border border-white/10 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/10 transition text-sm">
+            Next
+          </button>
         </div>
       </section>
     </main>
