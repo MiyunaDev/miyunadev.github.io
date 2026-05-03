@@ -13,6 +13,7 @@ import kohibanaIcon from "./assets/icon/kohibana.png"
 import shirohanaIcon from "./assets/icon/shirohana.png"
 import honokaIcon from "./assets/icon/honoka.png"
 import shinobuIcon from "./assets/icon/shinobu.png"
+import upcomingIcon from "./assets/icon/upcoming.png"
 
 import {
   PiMagnifyingGlass,
@@ -275,6 +276,122 @@ const apps: AppItem[] = [
     ],
     technologies: ['Apache Cordova@3.2.0', "Vanilla JS"],
     languages: ['JavaScript'],
+    installMethods: [
+      { type: 'download' }
+    ]
+  },
+  {
+    name: "Eclaira",
+    description: "Experimental client for streaming and reading with your personal media server and managing your media library on various platforms with a focus on performance and minimalism.",
+    icon: upcomingIcon,
+    prod: false,
+    comingSoon: true,
+    role: 'client',
+    personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo },
+      { name: 'iOS', icon: PiDeviceMobileDuotone },
+      { name: 'Windows', icon: PiWindowsLogo },
+      { name: 'macOS', icon: PiMonitorDuotone },
+      { name: 'Linux', icon: PiLinuxLogo },
+      { name: 'Web', icon: PiGlobeDuotone }
+    ],
+    technologies: ["Apache Cordova", 'Vue'],
+    languages: ['TypeScript'],
+    installMethods: [
+      { type: 'download' }
+    ]
+  },
+  {
+    name: "Chiffon",
+    description: "Experimental client for streaming and reading with your personal media server and managing your media library on various platforms with a focus on performance and minimalism.",
+    icon: upcomingIcon,
+    prod: false,
+    comingSoon: true,
+    role: 'client',
+    personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo },
+      { name: 'iOS', icon: PiDeviceMobileDuotone },
+      { name: 'Windows', icon: PiWindowsLogo },
+      { name: 'macOS', icon: PiMonitorDuotone },
+      { name: 'Linux', icon: PiLinuxLogo },
+      { name: 'Web', icon: PiGlobeDuotone }
+    ],
+    technologies: ["Apache Cordova",'Vue'],
+    languages: ['JavaScript'],
+    installMethods: [
+      { type: 'download' }
+    ]
+  },
+  {
+    name: "Soufflé",
+    description: "Experimental client for streaming and reading with your personal media server and managing your media library on various platforms with a focus on performance and minimalism.",
+    icon: upcomingIcon,
+    prod: false,
+    comingSoon: true,
+    role: 'client',
+    personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo },
+      { name: 'iOS', icon: PiDeviceMobileDuotone },
+      { name: 'Windows', icon: PiWindowsLogo },
+      { name: 'macOS', icon: PiMonitorDuotone },
+      { name: 'Linux', icon: PiLinuxLogo },
+      { name: 'Web', icon: PiGlobeDuotone }
+    ],
+    technologies: ["Apache Cordova", 'Vue'],
+    languages: ['TypeScript'],
+    installMethods: [
+      { type: 'download' }
+    ]
+  },
+  {
+    name: "Madeleine",
+    description: "Experimental client for streaming and reading with your personal media server and managing your media library on various platforms with a focus on performance and minimalism.",
+    icon: upcomingIcon,
+    prod: false,
+    comingSoon: true,
+    role: 'client',
+    personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo },
+      { name: 'iOS', icon: PiDeviceMobileDuotone },
+      { name: 'Windows', icon: PiWindowsLogo },
+      { name: 'macOS', icon: PiMonitorDuotone },
+      { name: 'Linux', icon: PiLinuxLogo },
+      { name: 'Web', icon: PiGlobeDuotone }
+    ],
+    technologies: ["Apache Cordova",'Vue'],
+    languages: ['JavaScript'],
+    installMethods: [
+      { type: 'download' }
+    ]
+  },
+  {
+    name: "Fenrir",
+    description: "Experimental client for streaming and reading with your personal media server and managing your media library on various platforms with a focus on performance and minimalism.",
+    icon: upcomingIcon,
+    prod: false,
+    comingSoon: true,
+    role: 'client',
+    personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo },
+    ],
+    technologies: ['Android', "Jetpack Compose"],
+    languages: ['Kotlin'],
+    installMethods: [
+      { type: 'download' }
+    ]
+  },
+  {
+    name: "Phoenix",
+    description: "Experimental client for streaming and reading with your personal media server and managing your media library on various platforms with a focus on performance and minimalism.",
+    icon: upcomingIcon,
+    prod: false,
+    comingSoon: true,
+    role: 'client',
+    personalPlatforms: [
+      { name: 'Android', icon: PiAndroidLogo }
+    ],
+    technologies: ['Android', "Jetpack Compose"],
+    languages: ['Java'],
     installMethods: [
       { type: 'download' }
     ]
